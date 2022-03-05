@@ -1,7 +1,5 @@
 package se.iths.springloppis.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,7 @@ public class UserEntity {
         this.email = email;
     }
 
-    @JsonIgnore      // = @JsonBTransient -> Java EE använder JsonB men Spring boot använder Jackson
+    //@JsonIgnore      // = @JsonBTransient -> Java EE använder JsonB men Spring boot använder Jackson
     public List<ItemEntity> getItems() {
         return items;
     }
