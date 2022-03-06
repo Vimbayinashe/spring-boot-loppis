@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import se.iths.springloppis.entity.UserEntity;
 import se.iths.springloppis.repository.UserRepository;
 
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 @Service
@@ -20,8 +21,8 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        Optional<UserEntity> foundUser = userRepository.findById(id);
-        foundUser.ifPresent(UserEntity -> userRepository.deleteById(id));
+        UserEntity foundUser = userRepository.findById(id).orElseThrow(EntityExistsException::new);
+        userRepository.deleteById(foundUser.getId());
     }
 
     public Optional<UserEntity> findUserById(Long id) {

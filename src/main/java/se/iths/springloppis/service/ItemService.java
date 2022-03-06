@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import se.iths.springloppis.entity.ItemEntity;
 import se.iths.springloppis.repository.ItemRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -23,9 +24,8 @@ public class ItemService {
     }
 
     public void deleteItem(Long id) {
-        Optional<ItemEntity> foundItem = itemRepository.findById(id);
-        foundItem.ifPresent(itemEntity -> itemRepository.deleteById(id));   //todo: use "id" parameter or itemEntity
-        // .getId()
+        ItemEntity foundItem = itemRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        itemRepository.deleteById(foundItem.getId());
     }
 
     public Optional<ItemEntity> findItemById(Long id) {
