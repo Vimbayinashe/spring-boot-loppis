@@ -1,5 +1,7 @@
 package se.iths.springloppis.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import se.iths.springloppis.service.UserService;
 public class UserController {
 
     UserService userService;
+    Logger logger = LoggerFactory.getLogger(UserController.class);          // import org.slf4j.Logger
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -20,6 +23,14 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
         UserEntity foundUser = userService.createUser(user);
+
+        // Logger Demo
+        logger.trace("Logging at TRACE level");
+        logger.debug("Logging at DEBUG level");
+        logger.info("Logging at INFO level");
+        logger.warn("Logging at WARN level");
+        logger.error("Logging at ERROR level");
+
         return new ResponseEntity<>(foundUser, HttpStatus.CREATED);
     }
 
