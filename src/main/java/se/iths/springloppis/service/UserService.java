@@ -1,6 +1,8 @@
 package se.iths.springloppis.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import se.iths.springloppis.entity.UserEntity;
 import se.iths.springloppis.repository.UserRepository;
 
@@ -21,7 +23,8 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        UserEntity foundUser = userRepository.findById(id).orElseThrow(EntityExistsException::new);
+        UserEntity foundUser = userRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID " + id + " not found"));
         userRepository.deleteById(foundUser.getId());
     }
 

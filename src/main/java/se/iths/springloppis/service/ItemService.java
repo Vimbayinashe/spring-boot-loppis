@@ -1,6 +1,8 @@
 package se.iths.springloppis.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import se.iths.springloppis.entity.ItemEntity;
 import se.iths.springloppis.repository.ItemRepository;
 
@@ -24,7 +26,8 @@ public class ItemService {
     }
 
     public void deleteItem(Long id) {
-        ItemEntity foundItem = itemRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        ItemEntity foundItem = itemRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item with ID " + id + " not found"));
         itemRepository.deleteById(foundItem.getId());
     }
 
