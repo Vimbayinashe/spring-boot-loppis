@@ -1,9 +1,12 @@
 package se.iths.springloppis.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.iths.springloppis.entity.ItemEntity;
 import se.iths.springloppis.service.ItemService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController
@@ -17,24 +20,27 @@ public class ItemController {
     }
 
     @PostMapping()
-    public ItemEntity createItem(@RequestBody ItemEntity itemEntity) {
-        return itemService.createItem(itemEntity);
+    public ResponseEntity<ItemEntity> createItem(@RequestBody ItemEntity itemEntity) {
+        ItemEntity createdItem = itemService.createItem(itemEntity);
+        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("{id}")                    //todo: how can we give 400 series response (deletes IFF item exists)
-    public void deleteItem(@PathVariable Long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {     // Note: returning Void here
         itemService.deleteItem(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("{id}")
-    public Optional<ItemEntity> findItemById(@PathVariable Long id) {
-        return itemService.findItemById(id);
+    public ResponseEntity<ItemEntity> findItemById(@PathVariable Long id) {
+        ItemEntity foundItem = itemService.findItemById(id).orElseThrow(EntityNotFoundException::new);
+        return new ResponseEntity<>(foundItem, HttpStatus.OK);
     }
 
     @GetMapping()
-    public Iterable<ItemEntity> getAllItems() {
-        return itemService.findAllItems();
+    public ResponseEntity<Iterable<ItemEntity>> getAllItems() {
+        Iterable<ItemEntity> items = itemService.findAllItems();
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
-
 
 }
