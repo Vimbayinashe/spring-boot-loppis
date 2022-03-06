@@ -16,7 +16,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ItemEntity createItem(@RequestBody ItemEntity itemEntity) {
         return itemService.createItem(itemEntity);
     }
@@ -31,7 +31,7 @@ public class ItemController {
         return itemService.findItemById(id);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public Iterable<ItemEntity> getAllItems() {
         return itemService.findAllItems();
     }

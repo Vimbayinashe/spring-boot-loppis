@@ -16,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
+    @PostMapping()
     public UserEntity createUser(@RequestBody UserEntity user) {
         return userService.createUser(user);
     }
@@ -31,7 +31,7 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public Iterable<UserEntity> getAllUsers() {
         return userService.findAllUsers();
     }
