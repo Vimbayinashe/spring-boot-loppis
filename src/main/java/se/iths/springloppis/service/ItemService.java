@@ -14,7 +14,7 @@ public class ItemService {
 
     // Field injection is not recommended
     // @Autowired      // = @Inject
-    ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     //@Autowired    ->  constructor inject is slightly better BUT best to provide own repository in the constructor
     public ItemService(ItemRepository itemRepository) {

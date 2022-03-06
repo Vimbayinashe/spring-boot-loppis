@@ -13,7 +13,7 @@ import se.iths.springloppis.service.UserService;
 @RequestMapping("users")
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
     Logger logger = LoggerFactory.getLogger(UserController.class);          // import org.slf4j.Logger
 
     public UserController(UserService userService) {
