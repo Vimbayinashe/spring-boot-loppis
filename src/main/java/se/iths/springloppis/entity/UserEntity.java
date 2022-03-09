@@ -16,9 +16,19 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ItemEntity> items = new ArrayList<>();
 
+    private String password;
+
     public void addItem(ItemEntity item) {
         items.add(item);
         item.setUser(this);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
