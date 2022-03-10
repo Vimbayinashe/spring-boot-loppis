@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()        // type of login we want to have - HTTP Basic in this case
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/users/signup").permitAll() //hasRole("ADMIN")
+                .antMatchers("/", "/home", "/users/signup").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()    // form login for Thymeleaf

@@ -26,8 +26,8 @@ public class UserService {
     public UserEntity createUser(UserEntity userEntity) {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
-        // Demo: hardcoded role
-        RoleEntity role = roleRepository.findByRole("USER");    // one can also set "USER" role to all users by default
+        // Demo: hardcoded role (available roles: USER, ADMIN)
+        RoleEntity role = roleRepository.findByRole("ROLE_USER");    // sets "USER" role to all users by default
         userEntity.addRole(role);
 
         return userRepository.save(userEntity);
