@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity      // disable default security & enable personalised security below
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoppisUserDetailsService userDetailsService;
@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()   // temporarily disable csrf protection for demo purposes
-                .httpBasic()        // type of login we want to have - HTTP Basic in this case
+                .httpBasic()        // type of login we want - HTTP Basic in this case (sent via HTTP Headers)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/home", "/users/signup").permitAll()
@@ -54,3 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+
+
+/*
+ * - antMatchers are a scripting language, likens regex
+ * - can be used with wild cards (*) to set security rules for specific path patterns (e.g. "/subjects/**")
+ */
+// antmachets are
