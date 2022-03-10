@@ -58,4 +58,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  * - antMatchers are a scripting language, likens regex
  * - can be used with wild cards (*) to set security rules for specific path patterns (e.g. "/subjects/**")
  */
-// antmachets are
