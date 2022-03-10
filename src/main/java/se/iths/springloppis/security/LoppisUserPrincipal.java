@@ -6,13 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import se.iths.springloppis.entity.RoleEntity;
 import se.iths.springloppis.entity.UserEntity;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class LoppisUserPrincipal implements UserDetails {
 
-    private UserEntity userEntity;
+    private final UserEntity userEntity;
 
     public LoppisUserPrincipal(UserEntity userEntity) {
         this.userEntity = userEntity;
@@ -21,13 +19,13 @@ public class LoppisUserPrincipal implements UserDetails {
     // convert RoleEntity to Spring Boot Security's SimpleGrantedAuthority
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<RoleEntity> roles = userEntity.getRoles();
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles.size());
+        return userEntity.getRoles().stream()
+                .map(RoleEntity::getRole)
+                .map(String::toUpperCase)
+                .map(SimpleGrantedAuthority::new)
+                .toList();
 
-        for (RoleEntity role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().toUpperCase()));
-        }
-        return grantedAuthorities;
+        // .map(role -> new SimpleGrantedAuthority(role.getRole().toUpperCase()))
     }
 
     @Override
