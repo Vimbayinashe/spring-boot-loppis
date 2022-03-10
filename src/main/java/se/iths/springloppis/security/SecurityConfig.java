@@ -1,12 +1,14 @@
 package se.iths.springloppis.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 
 @EnableWebSecurity      // disable default security & enable personalised security below
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
+//public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // BeanConfig automatically replaces authenticationProvider() below (Martin)
     // automatically included in LoppisUserDetailsService (since it is marked by @Service)      (Martin)
@@ -30,9 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.authenticationProvider(authenticationProvider());
 //    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    // Refactor bort "extends WebSecurityConfigurerAdapter"
+    //    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        return http
                 .csrf().disable()   // temporarily disable csrf protection for demo purposes
                 .httpBasic()        // type of login we want - HTTP Basic in this case (sent via HTTP Headers)
                 .and()
@@ -47,7 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()   // one can create a logout.html template
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .permitAll();
+                .permitAll()
+                // below only valid if not extending WebSecurityConfigurerAdapter
+                .and()
+                .build();
+
 
     }
 
