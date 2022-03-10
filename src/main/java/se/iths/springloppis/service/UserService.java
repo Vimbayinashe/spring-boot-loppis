@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import se.iths.springloppis.entity.RoleEntity;
 import se.iths.springloppis.entity.UserEntity;
+import se.iths.springloppis.repository.RoleRepository;
 import se.iths.springloppis.repository.UserRepository;
 
 import java.util.Optional;
@@ -13,14 +15,21 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public UserEntity createUser(UserEntity userEntity) {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
+        // Demo: hardcoded role
+        RoleEntity role = roleRepository.findByRole("USER");    // one can also set "USER" role to all users by default
+        userEntity.addRole(role);
+
         return userRepository.save(userEntity);
     }
 
