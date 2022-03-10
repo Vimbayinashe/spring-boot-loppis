@@ -1,7 +1,7 @@
 package se.iths.springloppis.service;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import se.iths.springloppis.entity.RoleEntity;
@@ -14,13 +14,22 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    // good to set fields as final -> receive a compilation warning if field is not instantiated / null
+    // "final" can then be removed if needed.
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder; // = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    // Vi vill aldrig instantsiera data eller datatyper -> helst vill vi låter Spring Boot container dependency
+    // manager skapa det åt oss. I SecurityConfig finns en PasswordEncoder metod markerad med @Bean
+    // Vi jobbar mot interfaces (i konstruktor) istället.
+
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserEntity createUser(UserEntity userEntity) {
