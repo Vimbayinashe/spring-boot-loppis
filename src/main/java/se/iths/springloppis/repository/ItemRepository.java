@@ -8,3 +8,5 @@ import se.iths.springloppis.entity.ItemEntity;
 public interface ItemRepository extends CrudRepository<ItemEntity, Long> {   // <Entity, IdType>
     // Spring Boot implements this repository for us
 }
+
+// @Repository -> Spring Boot equivalent of @Service
