@@ -1,6 +1,10 @@
 package se.iths.springloppis.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +20,13 @@ public class UserEntity {
     // @Column(unique = true)   // requires interface implementations -> check for constraints in UserService?
     private String username;
     private String email;
+
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)   - lazy alternative to DTO Mapping (Not Advisable)
     private String password;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime registered;       // in JSON payload "registered": "2022-10-03 21:30"
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ItemEntity> items = new ArrayList<>();
@@ -24,6 +34,19 @@ public class UserEntity {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<RoleEntity> roles = new HashSet<>();
 
+
+    public LocalDateTime getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(LocalDateTime registered) {
+        this.registered = registered;
+    }
+
+    @PrePersist     //körs precis innan något sparas till databas
+    public void getCurrentDate() {
+        setRegistered(LocalDateTime.now());
+    }
 
     public void addRole(RoleEntity role) {
         roles.add(role);
