@@ -12,6 +12,8 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // @Column(unique = true)   // requires interface implementations -> check for constraints in UserService?
     private String username;
     private String email;
     private String password;

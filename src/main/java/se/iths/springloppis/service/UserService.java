@@ -21,7 +21,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder; // = new BCryptPasswordEncoder();
 
-    // Vi vill aldrig instantsiera data eller datatyper -> helst vill vi låter Spring Boot container dependency
+    // Vi vill aldrig instansiera data eller datatyper -> helst vill vi låter Spring Boot container dependency
     // manager skapa det åt oss. I SecurityConfig finns en PasswordEncoder metod markerad med @Bean
     // Vi jobbar mot interfaces (i konstruktor) istället.
 
@@ -38,6 +38,12 @@ public class UserService {
         // Demo: hardcoded role (available roles: USER, ADMIN)
         RoleEntity role = roleRepository.findByRole("ROLE_USER");    // sets "USER" role to all users by default
         userEntity.addRole(role);
+
+        //check if user already exists in database
+//        if(userRepository.findByUsername(userEntity.getUsername()) != null)
+//            throw new Error()   // throw ambiguous error message - avoid too much, specific information -> avoid
+//            giving
+        // hackers info about which email addresses/names are already saved & they can attempt to hack
 
         return userRepository.save(userEntity);
     }
