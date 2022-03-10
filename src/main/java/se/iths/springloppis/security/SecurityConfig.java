@@ -1,32 +1,30 @@
 package se.iths.springloppis.security;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Configuration
+
 @EnableWebSecurity      // disable default security & enable personalised security below
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final LoppisUserDetailsService userDetailsService;
+    // BeanConfig automatically replaces authenticationProvider() below (Martin)
+    // automatically included in LoppisUserDetailsService (since it is marked by @Service)      (Martin)
+//    private final LoppisUserDetailsService userDetailsService;
+//
+//    public SecurityConfig(LoppisUserDetailsService userDetailsService) {
+//        this.userDetailsService = userDetailsService;
+//    }
 
-    public SecurityConfig(LoppisUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {     //auto encrypt & decrypt passwords
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(userDetailsService);
+//        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+//        return provider;
+//    }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {     //auto encrypt & decrypt passwords
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return provider;
-    }
-
-    // if we have only one userDetailServices we don't need to override this method
+    // if we have only one userDetailServices we don't need to override this method (Pontus)
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) {
 //        auth.authenticationProvider(authenticationProvider());
